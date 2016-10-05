@@ -1,0 +1,42 @@
+{
+  "name": "rollrank",
+  "version": "1.0.0",
+  "description": "Rollable ranklist for acm/icpc.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server --devtool eval",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Herobs/rollrank.git"
+  },
+  "keywords": [
+    "acm/icpc",
+    "ranklist"
+  ],
+  "author": "Herobs <herobs@herobs.cn>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Herobs/rollrank/issues"
+  },
+  "homepage": "https://github.com/Herobs/rollrank#readme",
+  "devDependencies": {
+    "babel-core": "^6.16.0",
+    "babel-eslint": "^7.0.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-class-properties": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "es6-promise": "^4.0.5",
+    "eslint": "^3.6.1",
+    "lodash": "^4.16.3",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-motion": "^0.4.5",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.1",
+    "whatwg-fetch": "^1.0.0"
+  }
+}

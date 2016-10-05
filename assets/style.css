@@ -1,0 +1,87 @@
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+.rollrank-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+}
+.rollrank-header img {
+  height: 56px;
+}
+.rollrank-header h1 {
+  font-size: 36px;
+}
+
+.ranklist {
+  position: relative;
+  width: 98%;
+  margin: 0 auto;
+}
+
+.ranklist-header {
+  display: flex;
+  align-items: flex-end;
+  height: 64px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 10px;
+}
+
+.ranklist-item {
+  position: absolute;
+  display: flex;
+  align-items: stretch;
+  height: 36px;
+  width: 100%;
+  padding: 2px 0;
+}
+.ranklist-item--active {
+  background-color: lightblue;
+}
+
+.ranklist-rank, .ranklist-team, .ranklist-solves, .ranklist-penalty, .ranklist-problem {
+  text-align: center;
+  padding: 10px 0;
+}
+.ranklist-rank {
+  flex: 0 1 36px;
+}
+.ranklist-team {
+  flex: 0 1 128px;
+}
+.ranklist-solves {
+  flex: 0 1 96px;
+}
+.ranklist-penalty {
+  flex: 0 1 72px;
+}
+.ranklist-problem {
+  flex: 1 1 0;
+  text-align: center;
+  color: #fff;
+  font-family: monospace;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0 1px;
+  transition: background-color 1s cubic-bezier(.25, .75, .25, .75);
+}
+.ranklist-header > .ranklist-problem {
+  font-family: inherit;
+  padding: 8px 10px;
+  color: #000;
+}
+
+.ranklist-problem--accepted {
+  background-color: green;
+}
+.ranklist-problem--wrong {
+  background-color: red;
+}
+.ranklist-problem--unknown {
+  background: orange;
+}
+.ranklist-problem--untouched {
+  background-color: #fff;
+  color: #000;
+}

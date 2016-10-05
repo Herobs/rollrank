@@ -1,0 +1,7 @@
+# System files
+.DS_Store
+._*
+Thumbs.db
+
+# Modules
+node_modules
