@@ -14,7 +14,7 @@ function compare(value1, value2, direction = 1) {
 
 class RollRank extends Component {
   static defaultProps = {
-    src: '/rank.json'
+    src: 'rank.json'
   };
   // initial state
   state = { problems: [], rank: [], history: [] };
@@ -157,6 +157,14 @@ class RollRank extends Component {
       return;
     }
 
+    const keyCodes = {
+      13: 'Enter',
+      32: ' ',
+      37: 'ArrowLeft',
+      38: 'ArrowUp',
+      39: 'ArrowRight',
+      40: 'ArrowDown',
+    };
     const keys = {
       forward: ['ArrowRight', ' ', 'Enter'],
       backward: ['ArrowLeft'],
@@ -169,7 +177,7 @@ class RollRank extends Component {
       return keymap;
     }, {});
 
-    const action = keymap[e.key];
+    const action = keymap[e.key] || keymap[keyCodes[e.keyCode]];
     if (action) {
       // prevent default key behaviour
       e.preventDefault();

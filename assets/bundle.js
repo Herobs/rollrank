@@ -21728,6 +21728,14 @@
 	        return;
 	      }
 
+	      var keyCodes = {
+	        13: 'Enter',
+	        32: ' ',
+	        37: 'ArrowLeft',
+	        38: 'ArrowUp',
+	        39: 'ArrowRight',
+	        40: 'ArrowDown'
+	      };
 	      var keys = {
 	        forward: ['ArrowRight', ' ', 'Enter'],
 	        backward: ['ArrowLeft'],
@@ -21742,7 +21750,7 @@
 	        return keymap;
 	      }, {});
 
-	      var action = keymap[e.key];
+	      var action = keymap[e.key] || keymap[keyCodes[e.keyCode]];
 	      if (action) {
 	        // prevent default key behaviour
 	        e.preventDefault();
@@ -21881,7 +21889,7 @@
 	}(_react.Component);
 
 	RollRank.defaultProps = {
-	  src: '/rank.json'
+	  src: 'rank.json'
 	};
 	exports.default = RollRank;
 
