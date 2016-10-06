@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import { Motion, spring, presets } from 'react-motion';
 import range from 'lodash/range';
 import 'whatwg-fetch';
-
-const springConfig = { stiffness: 120, damping: 14 };
-const ySpringConfig = { stiffness: 120, damping: 14, precision: 1 };
-const bgSpringConfig = { stiffness: 210, damping: 20, precision: 1 };
 
 // compare two value with direction
 function compare(value1, value2, direction = 1) {
@@ -78,48 +73,43 @@ class RollRank extends Component {
           {range(rank.length).map(i => {
             //const r = rank.findIndex(r => r.rank === i + 1);
             const r = rank[i];
-            const style = r.team === fly ? {
-              scale: spring(1.08, springConfig),
-              shadow: spring(16, springConfig),
-              y: spring(this.y(r.rank), ySpringConfig),
-              z: 99,
-            } : {
-              scale: spring(1, springConfig),
-              shadow: spring(1, springConfig),
-              y: spring(this.y(r.rank), ySpringConfig),
-              z: 1,
+            let style = {
+              top: this.y(r.rank),
+              zIndex: 1,
+              backgroundColor: '#fff'
             };
-            return (
-              <Motion style={style} key={i} onRest={() => { if (this.state.fly !== null) this.setState({ fly: null }); }}>
-                {({ scale, shadow, y, z }) =>
-                  <div
-                    className="ranklist-item"
-                    style={{
-                      backgroundColor: r.team === current.team ? '#0cf' : '#fff',
-                      boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0`,
-                      transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-                      zIndex: z
-                    }}>
-                    <div className="ranklist-rank">{r.rank}</div>
-                    <div className="ranklist-team">{r.team}</div>
-                    {r.problems.map(p => {
-                      if (p.submits === 0) {
-                        return (<div key={p.id} className="ranklist-problem ranklist-problem--untouched">{p.id}</div>);
-                      } else {
-                        const className = 'ranklist-problem ranklist-problem--' +
-                          (p.reveal ? (p.solved ? 'accepted' : 'wrong') : 'unknown');
 
-                        return (
-                          <div key={p.id} className={className}>
-                            {p.reveal && p.solved ? `${p.submits}-${p.time}` : p.submits}
-                          </div>
-                        );
-                      }
-                    })}
-                    <div className="ranklist-solves">{`${r.solves} - ${r.penalty}`}</div>
-                  </div>
-                }
-              </Motion>
+            if (r.team === fly) {
+              style.zIndex = 99;
+              style.animation = '1.2s raise';
+            }
+            if (r.team === current.team) {
+              style.backgroundColor = '#0cf';
+            }
+
+            return (
+              <div
+                key={i}
+                className="ranklist-item"
+                style={style}>
+                <div className="ranklist-rank">{r.rank}</div>
+                <div className="ranklist-team">{r.team}</div>
+                {r.problems.map(p => {
+                  if (p.submits === 0) {
+                    return (<div key={p.id} className="ranklist-problem ranklist-problem--untouched">{p.id}</div>);
+                  } else {
+                    const className = 'ranklist-problem ranklist-problem--' +
+                      (p.reveal ? (p.solved ? 'accepted' : 'wrong') : 'unknown');
+
+                    return (
+                      <div key={p.id} className={className}>
+                        {p.reveal && p.solved ? `${p.submits}-${p.time}` : p.submits}
+                      </div>
+                    );
+                  }
+                })}
+                <div className="ranklist-solves">{`${r.solves} - ${r.penalty}`}</div>
+              </div>
             );
           })}
         </div>
@@ -132,8 +122,10 @@ class RollRank extends Component {
     const height = 40;
     // margin between ranklist items
     const margin = 6;
+    // ranklist header height
+    const header = 72;
 
-    return (rank - 1) * (height + margin);
+    return (rank - 1) * (height + margin) + header;
   };
   // format seconds to hh:mm:ss
   format(seconds) {
@@ -220,14 +212,13 @@ class RollRank extends Component {
       }
       if (problem) {
         problem.reveal = true;
-        this.setState({ current });
 
         if (problem.solved) {
           current.solves++;
           current.penalty += problem.time;
-          setTimeout(() => {
-            this.adjust(current);
-          }, 500);
+          this.adjust(current);
+        } else {
+          this.setState({ current });
         }
       }
     }
@@ -263,7 +254,9 @@ class RollRank extends Component {
         }
       }
     }
-    this.setState({ current });
+    setTimeout(() => {
+      this.setState({ current });
+    }, 1200);
   };
   // compare rank
   compare(r1, r2, direction) {

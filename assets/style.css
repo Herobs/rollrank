@@ -36,6 +36,8 @@ body {
   width: 100%;
   max-width: 100%;
   padding: 2px 0;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0;
+  transition: top 1s .3s;
 }
 .ranklist-item--active {
   background-color: lightblue;
@@ -85,4 +87,15 @@ body {
 .ranklist-problem--untouched {
   background-color: #fff;
   color: #000;
+}
+
+@keyframes raise {
+  30% {
+    box-shadow: rgba(0, 0, 0, 0.2) 0 16px 32px 0;
+    transform: scale(1.1);
+  }
+  80% {
+    box-shadow: rgba(0, 0, 0, 0.2) 0 16px 32px 0;
+    transform: scale(1.1);
+  }
 }
