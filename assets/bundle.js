@@ -21521,8 +21521,13 @@
 	      _this.handleKeyUp(e);
 	    });
 	    //window.addEventListener('keyup', e => { this.handleKeyUp(e); });
+	    var src = 'rank.json';
+	    var $meta = document.querySelector('meta[name="rank-src"]');
+	    if ($meta) {
+	      src = $meta.attributes.content.value;
+	    }
 	    // get remote state
-	    fetch(_this.props.src).then(function (response) {
+	    fetch(src).then(function (response) {
 	      return response.json();
 	    }).then(function (res) {
 	      var title = res.title;
@@ -21655,8 +21660,14 @@
 	                    { key: p.id, className: 'ranklist-problem ranklist-problem--untouched' },
 	                    p.id
 	                  );
+	                } else if (p.reveal > 0) {
+	                  return _react2.default.createElement(
+	                    'div',
+	                    { key: p.id, className: 'ranklist-problem ranklist-problem--unknown' },
+	                    p.submits - p.reveal + '+' + p.reveal
+	                  );
 	                } else {
-	                  var className = 'ranklist-problem ranklist-problem--' + (p.reveal ? p.solved ? 'accepted' : 'wrong' : 'unknown');
+	                  var className = 'ranklist-problem ranklist-problem--' + (p.solved ? 'accepted' : 'wrong');
 
 	                  return _react2.default.createElement(
 	                    'div',

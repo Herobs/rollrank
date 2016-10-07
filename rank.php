@@ -32,7 +32,6 @@ while ($row = $db->fetch_array($res)) {
       'penalty' => 0,
       'problems' => array(),
     );
-    $users[$row['userid']] = $user;
   }
 
   $closes = $db->get_one("SELECT COUNT(*) as count FROM contest_status_$cid WHERE userid = {$row['userid']} AND problemid = {$row['problemid']} AND submittime >= $reveal");
@@ -44,10 +43,11 @@ while ($row = $db->fetch_array($res)) {
     'reveal' => intval($closes['count']),
   );
 
-  if ($closes['count'] == 0) {
+  if ($row['accepted'] == 1 && $closes['count'] == 0) {
     $user['solves']++;
     $user['penalty'] += intval($row['accepttime']);
   }
+  $users[$row['userid']] = $user;
 }
 
 function cmp_problem($p1, $p2) {
