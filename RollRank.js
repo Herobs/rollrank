@@ -19,8 +19,13 @@ class RollRank extends Component {
     // add key board listener
     window.addEventListener('keydown', e => { this.handleKeyUp(e); });
     //window.addEventListener('keyup', e => { this.handleKeyUp(e); });
+    let src = 'rank.json';
+    const $meta = document.querySelector('meta[name="rank-src"]');
+    if ($meta) {
+      src = $meta.attributes.content.value;
+    }
     // get remote state
-    fetch(this.props.src)
+    fetch(src)
       .then(response => response.json())
       .then(res => {
         const { title, problems, rank, history } = res;
@@ -97,9 +102,11 @@ class RollRank extends Component {
                 {r.problems.map(p => {
                   if (p.submits === 0) {
                     return (<div key={p.id} className="ranklist-problem ranklist-problem--untouched">{p.id}</div>);
+                  } else if (p.reveal > 0) {
+                    return (<div key={p.id} className="ranklist-problem ranklist-problem--unknown">{`${p.submits - p.reveal}+${p.reveal}`}</div>);
                   } else {
                     const className = 'ranklist-problem ranklist-problem--' +
-                      (p.reveal ? (p.solved ? 'accepted' : 'wrong') : 'unknown');
+                      (p.solved ? 'accepted' : 'wrong');
 
                     return (
                       <div key={p.id} className={className}>
@@ -218,7 +225,16 @@ class RollRank extends Component {
           current.penalty += problem.time;
           this.adjust(current);
         } else {
-          this.setState({ current });
+          let newCurrent = { team: null, rank: -Infinity };
+          for (let i = 0; i < rank.length; i++) {
+            for (let j = 0; j < rank[i].problems.length; j++) {
+              if (rank[i].problems[j].reveal === false && rank[i].rank > newCurrent.rank) {
+                newCurrent = rank[i];
+                break;
+              }
+            }
+          }
+          this.setState({ current: newCurrent });
         }
       }
     }

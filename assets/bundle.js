@@ -21807,7 +21807,16 @@
 	            current.penalty += problem.time;
 	            this.adjust(current);
 	          } else {
-	            this.setState({ current: current });
+	            var newCurrent = { team: null, rank: -Infinity };
+	            for (var _i = 0; _i < rank.length; _i++) {
+	              for (var j = 0; j < rank[_i].problems.length; j++) {
+	                if (rank[_i].problems[j].reveal === false && rank[_i].rank > newCurrent.rank) {
+	                  newCurrent = rank[_i];
+	                  break;
+	                }
+	              }
+	            }
+	            this.setState({ current: newCurrent });
 	          }
 	        }
 	      }
@@ -21846,10 +21855,10 @@
 	      this.setState({ fly: increment ? newR.team : null, rank: newRank });
 
 	      var current = { team: null, rank: -Infinity };
-	      for (var _i = 0; _i < newRank.length; _i++) {
-	        for (var j = 0; j < newRank[_i].problems.length; j++) {
-	          if (newRank[_i].problems[j].reveal === false && newRank[_i].rank > current.rank) {
-	            current = newRank[_i];
+	      for (var _i2 = 0; _i2 < newRank.length; _i2++) {
+	        for (var j = 0; j < newRank[_i2].problems.length; j++) {
+	          if (newRank[_i2].problems[j].reveal === false && newRank[_i2].rank > current.rank) {
+	            current = newRank[_i2];
 	            break;
 	          }
 	        }
