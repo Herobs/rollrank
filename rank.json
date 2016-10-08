@@ -2,6 +2,8 @@
   "title": "“虹软杯”中国大学生程序设计竞赛（杭州赛区）",
   "problems": [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012],
   "rank": [{
+    "id": "team0001",
+    "school": "杭州电子科技大学",
     "team": "team0001",
     "rank": 1,
     "solves": 8,
@@ -11,75 +13,77 @@
       "solved": true,
       "time": 1200,
       "submits": 1,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1002,
       "solved": true,
       "time": 1200,
       "submits": 1,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1003,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1004,
       "solved": true,
       "time": 13423,
       "submits": 5,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1005,
       "solved": false,
       "time": 0,
       "submits": 0,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1006,
       "solved": true,
       "time": 13423,
       "submits": 5,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1007,
       "solved": false,
       "time": 0,
       "submits": 5,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1008,
       "solved": false,
       "time": 0,
       "submits": 5,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1009,
       "solved": true,
       "time": 13423,
       "submits": 5,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1010,
       "solved": true,
       "time": 13423,
       "submits": 5,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1011,
       "solved": true,
       "time": 13423,
       "submits": 5,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1012,
       "solved": true,
       "time": 7892,
       "submits": 2,
-      "reveal": false
+      "reveal": 1
     }]
   }, {
+    "id": "team0002",
+    "school": "杭州电子科技大学",
     "team": "team0002",
     "rank": 2,
     "solves": 7,
@@ -89,75 +93,77 @@
       "solved": true,
       "time": 1200,
       "submits": 4,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1002,
       "solved": true,
       "time": 1200,
       "submits": 1,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1003,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1004,
       "solved": false,
       "time": 0,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1005,
       "solved": false,
       "time": 0,
       "submits": 0,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1006,
       "solved": true,
       "time": 5221,
       "submits": 3,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1007,
       "solved": true,
       "time": 120,
       "submits": 2,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1008,
       "solved": true,
       "time": 9230,
       "submits": 6,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1009,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1010,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1011,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1012,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }]
   }, {
+    "id": "team0003",
+    "school": "杭州电子科技大学",
     "team": "team0003",
     "rank": 3,
     "solves": 6,
@@ -167,73 +173,73 @@
       "solved": true,
       "time": 1200,
       "submits": 4,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1002,
       "solved": false,
       "time": 0,
       "submits": 0,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1003,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1004,
       "solved": false,
       "time": 0,
       "submits": 5,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1005,
       "solved": false,
       "time": 0,
       "submits": 0,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1006,
       "solved": false,
       "time": 3516,
       "submits": 3,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1007,
       "solved": false,
       "time": 0,
       "submits": 0,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1008,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1009,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1010,
       "solved": true,
       "time": 1200,
       "submits": 2,
-      "reveal": true
+      "reveal": 0
     }, {
       "id": 1011,
       "solved": true,
       "time": 1305,
       "submits": 4,
-      "reveal": false
+      "reveal": 1
     }, {
       "id": 1012,
       "solved": false,
       "time": 0,
       "submits": 0,
-      "reveal": true
+      "reveal": 0
     }]
   }],
   "history": []

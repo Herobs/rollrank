@@ -32,26 +32,34 @@ body {
   position: absolute;
   display: flex;
   align-items: stretch;
-  height: 36px;
+  height: 38px;
   width: 100%;
   max-width: 100%;
   padding: 2px 0;
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0;
-  transition: top 1s .3s;
+  transition: top 1s .8s;
 }
 .ranklist-item--active {
   background-color: lightblue;
 }
 
-.ranklist-rank, .ranklist-team, .ranklist-solves, .ranklist-penalty, .ranklist-problem {
+.ranklist-rank, .ranklist-school, .ranklist-team, .ranklist-solves, .ranklist-penalty, .ranklist-problem {
   text-align: center;
   padding: 10px 0;
 }
 .ranklist-rank {
   flex: 0 1 36px;
 }
+.ranklist-school {
+  flex: 0 1 160px;
+  text-align: left;
+}
+.ranklist-header > .ranklist-school, .ranklist-header > .ranklist-team {
+	text-align: center;
+}
 .ranklist-team {
   flex: 0 1 128px;
+  text-align: left;
 }
 .ranklist-solves {
   flex: 0 1 96px;
@@ -98,4 +106,21 @@ body {
     box-shadow: rgba(0, 0, 0, 0.2) 0 16px 32px 0;
     transform: scale(1.1);
   }
+}
+
+.rollrank-footer {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  margin-top: 300px;
+}
+.rollrank-footer svg {
+  height: 24px;
+  margin: 0 2px;
+}
+.footer-heart {
+  color: red;
+}
+.empty-flex {
+  flex: 1 1 auto;
 }

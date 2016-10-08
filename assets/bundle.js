@@ -21507,6 +21507,37 @@
 	  return (value1 - value2) * direction >= 0;
 	}
 
+	// scroll to specific offset
+	function scrollToElement(id) {
+	  var currentY = window.pageYOffset || window.document.documentElement && window.document.documentElement.scrollTop;
+	  window.document.body.scrollTop || 0;
+	  var windowHeight = window.innerHeight || window.document.documentElement && window.document.documentElement.clientHeight || document.body.clientHeight || 360;
+
+	  if (!id) return;
+	  var $element = document.querySelector('#' + id);
+	  if (!$element) return;
+
+	  var offset = $element.offsetTop - windowHeight + 200;
+	  var delayUnit = 300 / Math.abs(currentY - offset); // ms
+	  var delay = 0; // ms
+
+	  if (currentY < offset) {
+	    for (var i = currentY + 1; i <= offset; i++) {
+	      setTimeout(function (i) {
+	        window.scroll(0, i);
+	      }, Math.floor(delay), i);
+	      delay += delayUnit;
+	    }
+	  } else if (currentY > offset) {
+	    for (var i = currentY - 1; i >= offset; i--) {
+	      setTimeout(function (i) {
+	        window.scroll(0, i);
+	      }, Math.floor(delay), i);
+	      delay += delayUnit;
+	    }
+	  }
+	}
+
 	var RollRank = function (_Component) {
 	  _inherits(RollRank, _Component);
 
@@ -21538,27 +21569,15 @@
 	      // set page title
 
 	      document.title = title;
-	      // get last conceal team
-	      var current = rank.length;
-	      while (current-- > 0) {
-	        var found = false;
-	        rank[current].problems.forEach(function (p) {
-	          if (p.reveal === false) found = true;
-	        });
-	        if (found) break;
-	      }
-	      if (current >= 0) {
-	        current = rank[current];
-	      } else {
-	        current = { team: null };
-	      }
 
 	      _this.setState({
 	        title: title,
 	        problems: problems,
 	        rank: rank,
 	        history: history,
-	        current: current
+	        current: {}
+	      }, function () {
+	        return _this.setState({ current: _this.move({ rank: Infinity }) });
 	      });
 	    });
 	    return _this;
@@ -21604,6 +21623,11 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
+	              { className: 'ranklist-school' },
+	              '\u5B66\u6821'
+	            ),
+	            _react2.default.createElement(
+	              'div',
 	              { className: 'ranklist-team' },
 	              '\u961F\u4F0D'
 	            ),
@@ -21621,7 +21645,6 @@
 	            )
 	          ),
 	          (0, _range2.default)(rank.length).map(function (i) {
-	            //const r = rank.findIndex(r => r.rank === i + 1);
 	            var r = rank[i];
 	            var style = {
 	              top: _this2.y(r.rank),
@@ -21629,17 +21652,18 @@
 	              backgroundColor: '#fff'
 	            };
 
-	            if (r.team === fly) {
+	            if (r.id === fly) {
 	              style.zIndex = 99;
 	              style.animation = '1.2s raise';
 	            }
-	            if (r.team === current.team) {
+	            if (r.id === current.id) {
 	              style.backgroundColor = '#0cf';
 	            }
 
 	            return _react2.default.createElement(
 	              'div',
 	              {
+	                id: r.id,
 	                key: i,
 	                className: 'ranklist-item',
 	                style: style },
@@ -21647,6 +21671,11 @@
 	                'div',
 	                { className: 'ranklist-rank' },
 	                r.rank
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'ranklist-school' },
+	                r.school
 	              ),
 	              _react2.default.createElement(
 	                'div',
@@ -21666,13 +21695,18 @@
 	                    { key: p.id, className: 'ranklist-problem ranklist-problem--unknown' },
 	                    p.submits - p.reveal + '+' + p.reveal
 	                  );
-	                } else {
-	                  var className = 'ranklist-problem ranklist-problem--' + (p.solved ? 'accepted' : 'wrong');
-
+	                } else if (p.solved) {
 	                  return _react2.default.createElement(
 	                    'div',
-	                    { key: p.id, className: className },
-	                    p.reveal && p.solved ? p.submits + '-' + p.time : p.submits
+	                    { key: p.id, className: 'ranklist-problem ranklist-problem--accepted' },
+	                    p.submits + '-' + p.time
+	                  );
+	                } else {
+	                  return _react2.default.createElement(
+	                    'div',
+	                    { key: p.id, className: 'ranklist-problem ranklist-problem--wrong' },
+	                    '-',
+	                    p.submits
 	                  );
 	                }
 	              }),
@@ -21692,7 +21726,7 @@
 	    // get y with rank
 	    value: function y(rank) {
 	      // ranklist item height
-	      var height = 40;
+	      var height = 42;
 	      // margin between ranklist items
 	      var margin = 6;
 	      // ranklist header height
@@ -21722,9 +21756,10 @@
 
 	    // key up handler
 	    value: function handleKeyUp(e) {
-	      var now = Math.floor(Date.now() / 1000);
-	      // one action allowed in a second
-	      if (this.state.timestamp >= now) {
+	      var _this3 = this;
+
+	      if (this.acting) {
+	        e.preventDefault();
 	        return;
 	      }
 
@@ -21754,81 +21789,106 @@
 	      if (action) {
 	        // prevent default key behaviour
 	        e.preventDefault();
-	        this[action]();
+	        this.acting = true;
+	        this[action](function (err) {
+	          _this3.acting = false;
+	        });
 	      }
 	    }
 	  }, {
 	    key: 'move',
 
 	    // move current
-	    value: function move() {
-	      var direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-	      var _state2 = this.state;
-	      var current = _state2.current;
-	      var rank = _state2.rank;
+	    value: function move(current) {
+	      var direction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+	      var rank = this.state.rank;
 
-	      var found = { team: null, rank: Infinity * direction };
+	      var found = { id: null, rank: Infinity * direction };
 
 	      for (var i = 0; i < rank.length; i++) {
-	        if (rank[i].team !== current.team && _compare(rank[i].rank, current.rank, direction) && _compare(found.rank, rank[i].rank, direction)) {
+	        if (rank[i].id !== current.id && _compare(rank[i].rank, current.rank, direction) && _compare(found.rank, rank[i].rank, direction)) {
 	          found = rank[i];
 	        }
 	      }
-	      this.setState({ current: Object.assign({}, found) });
+
+	      scrollToElement(found.id);
+
+	      return found;
 	    }
 	    // move up
 
 	  }, {
 	    key: 'up',
-	    value: function up() {
-	      this.move(-1);
+	    value: function up(callback) {
+	      this.setState({ current: this.move(this.state.current) }, callback);
 	    }
 	    // move down
 
 	  }, {
 	    key: 'down',
-	    value: function down() {
-	      this.move();
+	    value: function down(callback) {
+	      this.setState({ current: this.move(this.state.current, 1) }, callback);
+	    }
+	    // the reveal problem in current
+
+	  }, {
+	    key: 'reveal',
+	    value: function reveal(current) {
+	      var problem = null;
+	      for (var i = 0; i < current.problems.length; i++) {
+	        if (current.problems[i].reveal > 0) {
+	          problem = current.problems[i];
+	          break;
+	        }
+	      }
+
+	      return problem;
+	    }
+	    // find next conceal team
+
+	  }, {
+	    key: 'next',
+	    value: function next(current) {
+	      var direction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+
+	      var problem = this.reveal(current);
+	      if (problem) {
+	        return current;
+	      } else {
+	        return this.move(current, direction);
+	      }
 	    }
 	    // reveal an unknown problem at tail
 
 	  }, {
 	    key: 'forward',
-	    value: function forward() {
-	      var _state3 = this.state;
-	      var current = _state3.current;
-	      var fly = _state3.fly;
-	      var rank = _state3.rank;
-	      var history = _state3.history;
+	    value: function forward(callback) {
+	      var _this4 = this;
+
+	      var _state2 = this.state;
+	      var current = _state2.current;
+	      var rank = _state2.rank;
+	      var history = _state2.history;
 
 
 	      if (current.problems) {
-	        var problem = null;
-	        for (var i = 0; i < current.problems.length; i++) {
-	          if (current.problems[i].reveal === false) {
-	            problem = current.problems[i];
-	            break;
-	          }
-	        }
+	        var problem = this.reveal(current);
 	        if (problem) {
-	          problem.reveal = true;
+	          problem.reveal = 0;
 
 	          if (problem.solved) {
 	            current.solves++;
 	            current.penalty += problem.time;
-	            this.adjust(current);
+	            this.adjust(current, 1, callback);
 	          } else {
-	            var newCurrent = { team: null, rank: -Infinity };
-	            for (var _i = 0; _i < rank.length; _i++) {
-	              for (var j = 0; j < rank[_i].problems.length; j++) {
-	                if (rank[_i].problems[j].reveal === false && rank[_i].rank > newCurrent.rank) {
-	                  newCurrent = rank[_i];
-	                  break;
-	                }
-	              }
-	            }
-	            this.setState({ current: newCurrent });
+	            this.setState({ current: current }, function () {
+	              setTimeout(function () {
+	                _this4.setState({ current: _this4.next(current) }, callback);
+	              }, 500);
+	            });
 	          }
+	        } else {
+	          this.setState({ current: this.next(current) }, callback);
 	        }
 	      }
 	    }
@@ -21842,41 +21902,40 @@
 
 	    // adjust the rank
 	    // and update relative ranks
-	    value: function adjust(r) {
-	      var _this3 = this;
+	    value: function adjust(current, direction, callback) {
+	      var _this5 = this;
 
-	      var direction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-	      var rank = this.state.rank;
-
-	      var newRank = rank.slice(0),
-	          newR = null,
-	          increment = 0;
+	      var rank = this.state.rank;var increment = 0;
+	      var oldCurrentRank = current.rank;
 
 	      for (var i = 0; i < rank.length; i++) {
-	        if (r.team === rank[i].team) {
-	          newR = rank[i];
-	        } else {
-	          if (_compare(r.rank, rank[i].rank, direction) && this.compare(r, rank[i], direction)) {
-	            newRank[i].rank++;
-	            increment++;
-	          }
+	        if (rank[i].id === current.id) continue;
+	        if (_compare(current.rank, rank[i].rank, direction) && this.compare(current, rank[i], direction)) {
+	          rank[i].rank++;
+	          increment++;
 	        }
 	      }
-	      newR.rank -= increment;
-	      this.setState({ fly: increment ? newR.team : null, rank: newRank });
+	      current.rank -= increment;
 
-	      var current = { team: null, rank: -Infinity };
-	      for (var _i2 = 0; _i2 < newRank.length; _i2++) {
-	        for (var j = 0; j < newRank[_i2].problems.length; j++) {
-	          if (newRank[_i2].problems[j].reveal === false && newRank[_i2].rank > current.rank) {
-	            current = newRank[_i2];
-	            break;
-	          }
-	        }
+	      if (increment) {
+	        this.setState({ current: current }, function () {
+	          setTimeout(function () {
+	            _this5.setState({ fly: current.id, rank: rank }, function () {
+	              setTimeout(function () {
+	                var next = { id: null };
+	                for (var _i = 0; _i < rank.length; _i++) {
+	                  if (oldCurrentRank === rank[_i].rank) {
+	                    next = rank[_i];
+	                  }
+	                }
+	                _this5.setState({ current: next }, callback);
+	              }, 1200);
+	            });
+	          }, 500);
+	        });
+	      } else {
+	        this.setState({ current: this.next(current), rank: rank }, callback);
 	      }
-	      setTimeout(function () {
-	        _this3.setState({ current: current });
-	      }, 1200);
 	    }
 	  }, {
 	    key: 'compare',
@@ -21885,7 +21944,7 @@
 	    value: function compare(r1, r2, direction) {
 	      if (r1.solves === r2.solves) {
 	        if (r1.penalty === r2.penalty) {
-	          return r1.team.localeCompare(r2.team) * direction >= 0;
+	          return r1.id.localeCompare(r2.id) * direction >= 0;
 	        } else {
 	          return _compare(r2.penalty, r1.penalty);
 	        }
