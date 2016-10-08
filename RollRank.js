@@ -127,12 +127,12 @@ class RollRank extends Component {
                   } else if (p.reveal > 0) {
                     return (<div key={p.id} className="ranklist-problem ranklist-problem--unknown">{`${p.submits - p.reveal}+${p.reveal}`}</div>);
                   } else if (p.solved) {
-                    return (<div key={p.id} className="ranklist-problem ranklist-problem--accepted">{`${p.submits}-${p.time}`}</div>);
+                    return (<div key={p.id} className="ranklist-problem ranklist-problem--accepted">{`${p.submits}-${Math.floor(p.time / 60)}`}</div>);
                   } else {
                     return (<div key={p.id} className="ranklist-problem ranklist-problem--wrong">-{p.submits}</div>);
                   }
                 })}
-                <div className="ranklist-solves">{`${r.solves} - ${r.penalty}`}</div>
+                <div className="ranklist-solves">{`${r.solves} - ${Math.floor(r.penalty / 60)}`}</div>
               </div>
             );
           })}
@@ -285,6 +285,8 @@ class RollRank extends Component {
       } else {
         this.setState({ current: this.next(current) }, callback);
       }
+    } else {
+      this.setState({ current: this.move(current) }, callback);
     }
   };
   // undo the last action in the history

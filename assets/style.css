@@ -51,15 +51,22 @@ body {
   flex: 0 1 36px;
 }
 .ranklist-school {
+  display: flex;
+  align-items: center;
   flex: 0 1 160px;
   text-align: left;
-}
-.ranklist-header > .ranklist-school, .ranklist-header > .ranklist-team {
-	text-align: center;
+  padding: 0;
 }
 .ranklist-team {
+  display: flex;
+  align-items: center;
   flex: 0 1 128px;
   text-align: left;
+  padding: 0;
+}
+.ranklist-header > .ranklist-school, .ranklist-header > .ranklist-team {
+  text-align: center;
+  padding: 10px 0;
 }
 .ranklist-solves {
   flex: 0 1 96px;

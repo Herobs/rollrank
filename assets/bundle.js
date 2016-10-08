@@ -21699,7 +21699,7 @@
 	                  return _react2.default.createElement(
 	                    'div',
 	                    { key: p.id, className: 'ranklist-problem ranklist-problem--accepted' },
-	                    p.submits + '-' + p.time
+	                    p.submits + '-' + Math.floor(p.time / 60)
 	                  );
 	                } else {
 	                  return _react2.default.createElement(
@@ -21713,10 +21713,30 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'ranklist-solves' },
-	                r.solves + ' - ' + r.penalty
+	                r.solves + ' - ' + Math.floor(r.penalty / 60)
 	              )
 	            );
 	          })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'rollrank-footer', style: { marginTop: this.state.rank.length * 48 + 20 + 'px' } },
+	          _react2.default.createElement('div', { className: 'empty-flex' }),
+	          _react2.default.createElement(
+	            'svg',
+	            { fill: '#000000', height: '24', viewBox: '0 0 24 24', width: '24', xmlns: 'http://www.w3.org/2000/svg' },
+	            _react2.default.createElement('path', { d: 'M0 0h24v24H0V0z', fill: 'none' }),
+	            _react2.default.createElement('path', { d: 'M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z' })
+	          ),
+	          'with',
+	          _react2.default.createElement(
+	            'svg',
+	            { fill: '#ff0000', height: '24', viewBox: '0 0 24 24', width: '24', xmlns: 'http://www.w3.org/2000/svg' },
+	            _react2.default.createElement('path', { d: 'M0 0h24v24H0z', fill: 'none' }),
+	            _react2.default.createElement('path', { d: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' })
+	          ),
+	          'by Herobs',
+	          _react2.default.createElement('div', { className: 'empty-flex' })
 	        )
 	      );
 	    }
@@ -21890,6 +21910,8 @@
 	        } else {
 	          this.setState({ current: this.next(current) }, callback);
 	        }
+	      } else {
+	        this.setState({ current: this.move(current) }, callback);
 	      }
 	    }
 	  }, {
