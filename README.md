@@ -7,7 +7,7 @@ Usage
 ```shell
 npm install && npm run build
 ```
-install devDependencies and build from es6 to es5.
+install dependencies and build from es6 to es5.
 
 ----------
 
@@ -19,3 +19,7 @@ Keyboard
 - `ArrowRight` backward (not implement yet)
 - `ArrowUp` move cursor up
 - `ArrowDown` move cousor down
+
+License
+-------
+This package release under MIT license.
