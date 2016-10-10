@@ -21646,18 +21646,19 @@
 	          ),
 	          (0, _range2.default)(rank.length).map(function (i) {
 	            var r = rank[i];
-	            var style = {
-	              top: _this2.y(r.rank),
+	            var innerStyle = {},
+	                outerStyle = {
+	              backgroundColor: '#fff',
 	              zIndex: 1,
-	              backgroundColor: '#fff'
+	              transform: 'translateY(' + _this2.y(r.rank - i) + 'px)'
 	            };
 
 	            if (r.id === fly) {
-	              style.zIndex = 99;
-	              style.animation = '1.2s raise';
+	              outerStyle.zIndex = 99;
+	              innerStyle.animation = '2s raise';
 	            }
 	            if (r.id === current.id) {
-	              style.backgroundColor = '#0cf';
+	              outerStyle.backgroundColor = '#0cf';
 	            }
 
 	            return _react2.default.createElement(
@@ -21666,61 +21667,68 @@
 	                id: r.id,
 	                key: i,
 	                className: 'ranklist-item',
-	                style: style },
+	                style: outerStyle
+	              },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ranklist-rank' },
-	                r.rank
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ranklist-school' },
-	                r.school
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ranklist-team' },
-	                r.team
-	              ),
-	              r.problems.map(function (p) {
-	                if (p.submits === 0) {
-	                  return _react2.default.createElement(
-	                    'div',
-	                    { key: p.id, className: 'ranklist-problem ranklist-problem--untouched' },
-	                    p.id
-	                  );
-	                } else if (p.reveal > 0) {
-	                  return _react2.default.createElement(
-	                    'div',
-	                    { key: p.id, className: 'ranklist-problem ranklist-problem--unknown' },
-	                    p.submits - p.reveal + '+' + p.reveal
-	                  );
-	                } else if (p.solved) {
-	                  return _react2.default.createElement(
-	                    'div',
-	                    { key: p.id, className: 'ranklist-problem ranklist-problem--accepted' },
-	                    p.submits + '-' + Math.floor(p.time / 60)
-	                  );
-	                } else {
-	                  return _react2.default.createElement(
-	                    'div',
-	                    { key: p.id, className: 'ranklist-problem ranklist-problem--wrong' },
-	                    '-',
-	                    p.submits
-	                  );
-	                }
-	              }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ranklist-solves' },
-	                r.solves + ' - ' + Math.floor(r.penalty / 60)
+	                {
+	                  className: 'ranklist-item-inner',
+	                  style: innerStyle },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'ranklist-rank' },
+	                  r.rank
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'ranklist-school' },
+	                  r.school
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'ranklist-team' },
+	                  r.team
+	                ),
+	                r.problems.map(function (p) {
+	                  if (p.submits === 0) {
+	                    return _react2.default.createElement(
+	                      'div',
+	                      { key: p.id, className: 'ranklist-problem ranklist-problem--untouched' },
+	                      p.id
+	                    );
+	                  } else if (p.reveal > 0) {
+	                    return _react2.default.createElement(
+	                      'div',
+	                      { key: p.id, className: 'ranklist-problem ranklist-problem--unknown' },
+	                      p.submits - p.reveal + '+' + p.reveal
+	                    );
+	                  } else if (p.solved) {
+	                    return _react2.default.createElement(
+	                      'div',
+	                      { key: p.id, className: 'ranklist-problem ranklist-problem--accepted' },
+	                      p.submits + '-' + Math.floor(p.time / 60)
+	                    );
+	                  } else {
+	                    return _react2.default.createElement(
+	                      'div',
+	                      { key: p.id, className: 'ranklist-problem ranklist-problem--wrong' },
+	                      '-',
+	                      p.submits
+	                    );
+	                  }
+	                }),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'ranklist-solves' },
+	                  r.solves + ' - ' + Math.floor(r.penalty / 60)
+	                )
 	              )
 	            );
 	          })
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'rollrank-footer', style: { marginTop: this.state.rank.length * 48 + 20 + 'px' } },
+	          { className: 'rollrank-footer' /* style={{ marginTop: (this.state.rank.length * 48 + 20) + 'px' }}*/ },
 	          _react2.default.createElement('div', { className: 'empty-flex' }),
 	          _react2.default.createElement(
 	            'svg',
@@ -21749,10 +21757,8 @@
 	      var height = 42;
 	      // margin between ranklist items
 	      var margin = 6;
-	      // ranklist header height
-	      var header = 72;
 
-	      return (rank - 1) * (height + margin) + header;
+	      return (rank - 1) * (height + margin);
 	    }
 	  }, {
 	    key: 'format',
@@ -21951,7 +21957,7 @@
 	                  }
 	                }
 	                _this5.setState({ current: next }, callback);
-	              }, 1200);
+	              }, 2000);
 	            });
 	          }, 500);
 	        });

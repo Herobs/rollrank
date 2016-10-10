@@ -98,18 +98,18 @@ class RollRank extends Component {
           </div>
           {range(rank.length).map(i => {
             const r = rank[i];
-            let style = {
-              top: this.y(r.rank),
+            let innerStyle = {}, outerStyle = {
+              backgroundColor: '#fff',
               zIndex: 1,
-              backgroundColor: '#fff'
+              transform: `translateY(${this.y(r.rank - i)}px)`,
             };
 
             if (r.id === fly) {
-              style.zIndex = 99;
-              style.animation = '1.2s raise';
+              outerStyle.zIndex = 99;
+              innerStyle.animation = '2s raise';
             }
             if (r.id === current.id) {
-              style.backgroundColor = '#0cf';
+              outerStyle.backgroundColor = '#0cf';
             }
 
             return (
@@ -117,27 +117,32 @@ class RollRank extends Component {
                 id={r.id}
                 key={i}
                 className="ranklist-item"
-                style={style}>
-                <div className="ranklist-rank">{r.rank}</div>
-                <div className="ranklist-school">{r.school}</div>
-                <div className="ranklist-team">{r.team}</div>
-                {r.problems.map(p => {
-                  if (p.submits === 0) {
-                    return (<div key={p.id} className="ranklist-problem ranklist-problem--untouched">{p.id}</div>);
-                  } else if (p.reveal > 0) {
-                    return (<div key={p.id} className="ranklist-problem ranklist-problem--unknown">{`${p.submits - p.reveal}+${p.reveal}`}</div>);
-                  } else if (p.solved) {
-                    return (<div key={p.id} className="ranklist-problem ranklist-problem--accepted">{`${p.submits}-${Math.floor(p.time / 60)}`}</div>);
-                  } else {
-                    return (<div key={p.id} className="ranklist-problem ranklist-problem--wrong">-{p.submits}</div>);
-                  }
-                })}
-                <div className="ranklist-solves">{`${r.solves} - ${Math.floor(r.penalty / 60)}`}</div>
+                style={outerStyle}
+                >
+                <div
+                  className="ranklist-item-inner"
+                  style={innerStyle}>
+                  <div className="ranklist-rank">{r.rank}</div>
+                  <div className="ranklist-school">{r.school}</div>
+                  <div className="ranklist-team">{r.team}</div>
+                  {r.problems.map(p => {
+                    if (p.submits === 0) {
+                      return (<div key={p.id} className="ranklist-problem ranklist-problem--untouched">{p.id}</div>);
+                    } else if (p.reveal > 0) {
+                      return (<div key={p.id} className="ranklist-problem ranklist-problem--unknown">{`${p.submits - p.reveal}+${p.reveal}`}</div>);
+                    } else if (p.solved) {
+                      return (<div key={p.id} className="ranklist-problem ranklist-problem--accepted">{`${p.submits}-${Math.floor(p.time / 60)}`}</div>);
+                    } else {
+                      return (<div key={p.id} className="ranklist-problem ranklist-problem--wrong">-{p.submits}</div>);
+                    }
+                  })}
+                  <div className="ranklist-solves">{`${r.solves} - ${Math.floor(r.penalty / 60)}`}</div>
+                </div>
               </div>
             );
           })}
         </div>
-        <div className="rollrank-footer" style={{ marginTop: (this.state.rank.length * 48 + 20) + 'px' }}>
+        <div className="rollrank-footer"/* style={{ marginTop: (this.state.rank.length * 48 + 20) + 'px' }}*/>
           <div className="empty-flex"></div>
           <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 0h24v24H0V0z" fill="none"/>
@@ -160,10 +165,8 @@ class RollRank extends Component {
     const height = 42;
     // margin between ranklist items
     const margin = 6;
-    // ranklist header height
-    const header = 72;
 
-    return (rank - 1) * (height + margin) + header;
+    return (rank - 1) * (height + margin);
   };
   // format seconds to hh:mm:ss
   format(seconds) {
@@ -321,7 +324,7 @@ class RollRank extends Component {
                 }
               }
               this.setState({ current: next }, callback);
-            }, 1200);
+            }, 2000);
           });
         }, 500);
       })
