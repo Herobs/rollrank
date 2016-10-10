@@ -21517,7 +21517,9 @@
 	  var $element = document.querySelector('#' + id);
 	  if (!$element) return;
 
-	  var offset = $element.offsetTop - windowHeight + 200;
+	  var transform = window.getComputedStyle($element).transform.match(/matrix\((.*)\)/);
+	  var translateY = transform && +transform[1].split(',')[5].trim();
+	  var offset = $element.offsetTop + translateY - windowHeight + 96; // 96 is double ranklist-item height
 	  var delayUnit = 300 / Math.abs(currentY - offset); // ms
 	  var delay = 0; // ms
 

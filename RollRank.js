@@ -20,7 +20,9 @@ function scrollToElement(id) {
   const $element = document.querySelector('#' + id);
   if (!$element) return;
 
-  const offset = $element.offsetTop - windowHeight + 200;
+  const transform = window.getComputedStyle($element).transform.match(/matrix\((.*)\)/);
+  const translateY = transform && +transform[1].split(',')[5].trim();
+  const offset = $element.offsetTop + translateY - windowHeight + 96; // 96 is double ranklist-item height
   const delayUnit = 300 / Math.abs(currentY - offset); // ms
   let delay = 0; // ms
 
